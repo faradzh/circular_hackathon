@@ -596,3 +596,14 @@ ul.social-buttons {
   .btn-xl .badge {
     color: #fed136;
     background-color: white; }
+
+  .circular-img {
+    height: 67px;
+    margin-left: 10px;
+    margin-top: -12px;
+    transform: rotate(300deg);
+  }
+  #block-span {
+    margin-left: -20px;
+    margin-top: 10px;
+  }
