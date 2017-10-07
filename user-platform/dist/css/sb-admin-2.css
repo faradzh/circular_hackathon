@@ -17,6 +17,14 @@ body {
   margin-left: auto;
 }
 
+.navbar-uid {
+  float: right;
+}
+
+#navbar-brand {
+  width: 100vw;
+}
+
 #page-wrapper {
   padding: 0 15px;
   min-height: 568px;
