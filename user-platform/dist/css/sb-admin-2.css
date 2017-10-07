@@ -30,6 +30,7 @@ body {
 .oblock-logo {
   margin-top: -12px;
   margin-left: 5vw;
+  width: 100px;
 }
 
 #navbar-brand {
