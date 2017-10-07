@@ -49,7 +49,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'circular.urls'
+ROOT_URLCONF = 'oblock.urls'
 
 TEMPLATES = [
     {
@@ -67,7 +67,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'circular.wsgi.application'
+WSGI_APPLICATION = 'oblock.wsgi.application'
 
 
 # Database
