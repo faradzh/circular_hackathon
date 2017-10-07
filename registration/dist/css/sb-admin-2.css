@@ -9,6 +9,14 @@ body {
 #wrapper {
   width: 100%;
 }
+
+#registration-logo {
+  margin-top: 10%;
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+
 #page-wrapper {
   padding: 0 15px;
   min-height: 568px;
@@ -172,7 +180,7 @@ body {
   overflow-y: scroll;
 }
 .login-panel {
-  margin-top: 25%;
+  margin-top: 15%;
 }
 .flot-chart {
   display: block;
