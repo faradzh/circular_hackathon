@@ -61,7 +61,7 @@ body {
   -webkit-tap-highlight-color: #fed136; }
 
 #mainNav {
-  background-color: #222222; }
+  background-color: #222222;  }
   #mainNav .navbar-toggler {
     font-size: 12px;
     right: 0;
@@ -111,7 +111,8 @@ body {
     #mainNav.navbar-shrink {
       padding-top: 0;
       padding-bottom: 0;
-      background-color: #222222; }
+      background-color: #222222;
+      opacity: 0.95; }
       #mainNav.navbar-shrink .navbar-brand {
         font-size: 1.25em;
         padding: 12px 0; } }
@@ -119,7 +120,7 @@ body {
 header.masthead {
   text-align: center;
   color: white;
-  background-image: url("../img/header.jpg");
+  background-image: url("../img/landing-page-background.png");
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-position: center center;
