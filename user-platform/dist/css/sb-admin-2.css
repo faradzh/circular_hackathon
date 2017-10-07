@@ -19,6 +19,17 @@ body {
 
 .navbar-uid {
   float: right;
+  padding-right: 15px;
+}
+
+.uid {
+  font-weight: bold;
+  color: #0cbc22;
+}
+
+.oblock-logo {
+  margin-top: -12px;
+  margin-left: 5vw;
 }
 
 #navbar-brand {
