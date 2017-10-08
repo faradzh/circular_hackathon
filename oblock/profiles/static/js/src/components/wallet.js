@@ -19,8 +19,12 @@ const matchDispatchToProps = (dispatch) => {
 };
 
 class Wallet extends React.Component {
+    depositHandler () {
+        $('#modal-fadein').modal('toggle');
+    }
 
     render () {
+        const balance = this.props.balance;
         return (
             <div className="block block-themed">
                 <div className="block-header bg-modern">
@@ -31,7 +35,7 @@ class Wallet extends React.Component {
                         <span className="h4">
                             <i className="si si-wallet fa-3x text-modern"/>
                             <br />
-                            <span>400</span><span> <i>ocoins</i></span>
+                            <span>{balance}</span><span> <i>ocoins</i></span>
                         </span>
                     <canvas height="150" width="150"/></div>
                 </div>
@@ -40,7 +44,7 @@ class Wallet extends React.Component {
                         <div className="col-xs-6">
                         </div>
                         <div className="col-xs-6">
-                            <button className="btn btn-info push-5-r push-10" type="button"><i className="fa fa-plus"/> Deposit</button>
+                            <button className="btn btn-info push-5-r push-10" onClick={this.depositHandler} type="button"><i className="fa fa-location-arrow"/> Deposit</button>
                         </div>
                     </div>
                 </div>

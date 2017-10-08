@@ -20,13 +20,14 @@ const matchDispatchToProps = (dispatch) => {
 class UserId extends React.Component {
 
     render () {
+        const id = this.props.id;
         return (
             <div className="block block-themed">
                 <div className="block-header bg-danger">
                     <ul className="block-options">
                         <li>
                             <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo">
-                                134576
+                                {id}
                             </button>
                         </li>
                     </ul>

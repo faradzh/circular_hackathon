@@ -3,8 +3,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Wallet from './wallet';
 import UserId from './userId';
+import ModalWindow from './modalWindow';
 
-import { fetchData } from '../actions/dashboardActions';
+import { fetchData, setTransactionData, makeTransaction } from '../actions/dashboardActions';
 
 const mapStateToProps = (state) => {
     return {
@@ -14,7 +15,9 @@ const mapStateToProps = (state) => {
 
 const matchDispatchToProps = (dispatch) => {
     return bindActionCreators({
-        fetchData
+        fetchData,
+        setTransactionData,
+        makeTransaction
     }, dispatch)
 };
 
@@ -25,11 +28,11 @@ class Dashboard extends React.Component {
     }
 
     render () {
+        const buttons = [<button className="btn btn-sm btn-info" onClick={this.props.makeTransaction} type="submit"><i className="fa fa-send push-5-r"/> Transfer</button>];
+        const transactions = Object.keys(this.props.data).length > 0 ? this.props.data.transactions : [];
         return (
             <main id="main-container" style={{minHeight: '263px'}}>
-
                 <div className="content content-boxed">
-
                     <div className="block">
                         <div className="block-header">
                             <ul className="block-options">
@@ -44,11 +47,11 @@ class Dashboard extends React.Component {
                         <div className="block-content">
                             <div className="row">
                                 <div className="col-md-4">
-                                    <UserId />
+                                    <UserId id={this.props.data.unique_id}/>
                                 </div>
                                 <div className="col-md-4"></div>
                                 <div className="col-md-4">
-                                    <Wallet />
+                                    <Wallet balance={this.props.data.wallet_balance}/>
                                 </div>
                             </div>
                         </div>
@@ -59,6 +62,25 @@ class Dashboard extends React.Component {
                             <div className="table-responsive">
                                 <table className="table table-hover table-vcenter">
                                     <tbody>
+                                    {
+                                        transactions.map((transaction) => {
+                                            return (
+                                                <tr>
+                                                    <td className="text-center text-muted" style={{width: '200px'}}>{transaction.timestamp}</td>
+                                                    <td style={{width: '100px'}}>#ID{transaction.id}</td>
+                                                    <td>
+                                                        <a className="font-w600" href="javascript:void(0)">{transaction.wallet_from_owner_fullname}</a>
+                                                    </td>
+                                                    <td className="text-right">
+                                                        <a className="font-w600" href="javascript:void(0)">{transaction.wallet_to_owner_fullname}</a>
+                                                    </td>
+                                                    <td className="text-right" style={{width: '80px'}}>
+                                                        <span className="font-w600 text-success">+ {transaction.value}</span>
+                                                    </td>
+                                                </tr>
+                                            )
+                                        })
+                                    }
                                         <tr>
                                             <td className="text-center text-muted" style={{width: '200px'}}>September 29, 2016</td>
                                             <td style={{width: '100px'}}>#ID59630</td>
@@ -69,124 +91,7 @@ class Dashboard extends React.Component {
                                                 <a className="font-w600" href="javascript:void(0)">Ethan Howard</a>
                                             </td>
                                             <td className="text-right" style={{width: '80px'}}>
-                                                <span className="font-w600 text-success">+ $44</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="text-center text-muted">September 29, 2016</td>
-                                            <td>#ID59629</td>
-                                            <td>
-                                                <a className="font-w600" href="javascript:void(0)">Calendious</a>
-                                            </td>
-                                            <td className="text-right">
-                                                <a className="font-w600" href="javascript:void(0)">Emma Cooper</a>
-                                            </td>
-                                            <td className="text-right">
-                                                <span className="font-w600 text-success">+ $44</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="text-center text-muted">September 29, 2016</td>
-                                            <td>#ID59628</td>
-                                            <td>
-                                                <a className="font-w600" href="javascript:void(0)">Super Badges Pack</a>
-                                            </td>
-                                            <td className="text-right">
-                                                <a className="font-w600" href="javascript:void(0)">Ronald George</a>
-                                            </td>
-                                            <td className="text-right">
-                                                <span className="font-w600 text-success">+ $58</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="text-center text-muted">September 29, 2016</td>
-                                            <td>#ID59627</td>
-                                            <td>
-                                                <a className="font-w600" href="javascript:void(0)">Todo App</a>
-                                            </td>
-                                            <td className="text-right">
-                                                <a className="font-w600" href="javascript:void(0)">Craig Stone</a>
-                                            </td>
-                                            <td className="text-right">
-                                                <span className="font-w600 text-success">+ $46</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="text-center text-muted">September 29, 2016</td>
-                                            <td>#ID59626</td>
-                                            <td>
-                                                <a className="font-w600" href="javascript:void(0)">Mailday</a>
-                                            </td>
-                                            <td className="text-right">
-                                                <a className="font-w600" href="javascript:void(0)">Vincent Sims</a>
-                                            </td>
-                                            <td className="text-right">
-                                                <span className="font-w600 text-success">+ $52</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="text-center text-muted">September 29, 2016</td>
-                                            <td>#ID59625</td>
-                                            <td>
-                                                <a className="font-w600" href="javascript:void(0)">Super Badges Pack</a>
-                                            </td>
-                                            <td className="text-right">
-                                                <a className="font-w600" href="javascript:void(0)">Ann Parker</a>
-                                            </td>
-                                            <td className="text-right">
-                                                <span className="font-w600 text-success">+ $58</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="text-center text-muted">September 29, 2016</td>
-                                            <td>#ID59624</td>
-                                            <td>
-                                                <a className="font-w600" href="javascript:void(0)">Super Badges Pack</a>
-                                            </td>
-                                            <td className="text-right">
-                                                <a className="font-w600" href="javascript:void(0)">Vincent Sims</a>
-                                            </td>
-                                            <td className="text-right">
-                                                <span className="font-w600 text-success">+ $58</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="text-center text-muted">September 29, 2016</td>
-                                            <td>#ID59623</td>
-                                            <td>
-                                                <a className="font-w600" href="javascript:void(0)">Super Badges Pack</a>
-                                            </td>
-                                            <td className="text-right">
-                                                <a className="font-w600" href="javascript:void(0)">Dennis Ross</a>
-                                            </td>
-                                            <td className="text-right">
-                                                <span className="font-w600 text-success">+ $58</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="text-center text-muted">September 29, 2016</td>
-                                            <td>#ID59622</td>
-                                            <td>
-                                                <a className="font-w600" href="javascript:void(0)">e-Music</a>
-                                            </td>
-                                            <td className="text-right">
-                                                <a className="font-w600" href="javascript:void(0)">Joshua Munoz</a>
-                                            </td>
-                                            <td className="text-right">
-                                                <span className="font-w600 text-success">+ $50</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="text-center text-muted">September 28, 2016</td>
-                                            <td>#ID59621</td>
-                                            <td>
-                                                <a className="font-w600" href="javascript:void(0)">e-Music</a>
-                                            </td>
-                                            <td className="text-right">
-                                                <a className="font-w600" href="javascript:void(0)">Roger Hart</a>
-                                            </td>
-                                            <td className="text-right">
-                                                <span className="font-w600 text-success">+ $50</span>
+                                                <span className="font-w600 text-success">+ 44</span>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -200,6 +105,21 @@ class Dashboard extends React.Component {
                         </div>
                     </div>
                 </div>
+                <ModalWindow header="Enter an account ID you want to transfer ocoins to:"
+                buttons={buttons}>
+                    <div className="form-group">
+                        <label className="col-xs-12" htmlFor="register1-username">ID</label>
+                        <div className="col-xs-12">
+                            <input className="form-control" onChange={this.props.setTransactionData} type="text" id="register1-username" name="transactionUniqueId" placeholder="For instance: 156789"/>
+                        </div>
+                    </div>
+                    <div className="form-group">
+                        <label className="col-xs-12" htmlFor="register1-username">Amount of oCoins</label>
+                        <div className="col-xs-12">
+                            <input className="form-control" onChange={this.props.setTransactionData} type="text" id="register1-username" name="transactionAmount" placeholder="For instance: 10"/>
+                        </div>
+                    </div>
+                </ModalWindow>
             </main>
         )
     }

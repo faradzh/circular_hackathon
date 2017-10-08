@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
 import Index from './index';
 import SignUp from './components/signUp';
+import CompanySignUp from './components/companySignUp';
 import Dashboard from './components/dashboard';
 import MainLayout from './components/mainLayout';
 import store from './store';
@@ -26,6 +27,7 @@ ReactDOM.render(
             <Route path='/'>
                 <IndexRoute component={Index}/>
                 <Route path="/sign-up" component={SignUp} />
+                <Route path="/company-sign-up" component={CompanySignUp} />
                 <Route path="/dashboard" component={Dashboard} />
             </Route>
         </Router>

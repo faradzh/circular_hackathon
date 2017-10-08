@@ -15589,6 +15589,10 @@ var _signUp = __webpack_require__(137);
 
 var _signUp2 = _interopRequireDefault(_signUp);
 
+var _companySignUp = __webpack_require__(319);
+
+var _companySignUp2 = _interopRequireDefault(_companySignUp);
+
 var _dashboard = __webpack_require__(314);
 
 var _dashboard2 = _interopRequireDefault(_dashboard);
@@ -15629,6 +15633,7 @@ _reactDom2.default.render(_react2.default.createElement(
             { path: '/' },
             _react2.default.createElement(_reactRouter.IndexRoute, { component: _index2.default }),
             _react2.default.createElement(_reactRouter.Route, { path: '/sign-up', component: _signUp2.default }),
+            _react2.default.createElement(_reactRouter.Route, { path: '/company-sign-up', component: _companySignUp2.default }),
             _react2.default.createElement(_reactRouter.Route, { path: '/dashboard', component: _dashboard2.default })
         )
     )
@@ -15830,6 +15835,10 @@ var _signUpReducer = __webpack_require__(146);
 
 var _signUpReducer2 = _interopRequireDefault(_signUpReducer);
 
+var _companySignUpReducer = __webpack_require__(320);
+
+var _companySignUpReducer2 = _interopRequireDefault(_companySignUpReducer);
+
 var _dashboardReducer = __webpack_require__(318);
 
 var _dashboardReducer2 = _interopRequireDefault(_dashboardReducer);
@@ -15839,6 +15848,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = (0, _redux.combineReducers)({
     routing: _reactRouterRedux.routerReducer,
     signUpReducer: _signUpReducer2.default,
+    companySignUpReducer: _companySignUpReducer2.default,
     dashboardReducer: _dashboardReducer2.default
 });
 
@@ -43583,6 +43593,10 @@ var _userId = __webpack_require__(316);
 
 var _userId2 = _interopRequireDefault(_userId);
 
+var _modalWindow = __webpack_require__(322);
+
+var _modalWindow2 = _interopRequireDefault(_modalWindow);
+
 var _dashboardActions = __webpack_require__(317);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -43601,7 +43615,9 @@ var mapStateToProps = function mapStateToProps(state) {
 
 var matchDispatchToProps = function matchDispatchToProps(dispatch) {
     return (0, _redux.bindActionCreators)({
-        fetchData: _dashboardActions.fetchData
+        fetchData: _dashboardActions.fetchData,
+        setTransactionData: _dashboardActions.setTransactionData,
+        makeTransaction: _dashboardActions.makeTransaction
     }, dispatch);
 };
 
@@ -43622,6 +43638,13 @@ var Dashboard = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
+            var buttons = [_react2.default.createElement(
+                'button',
+                { className: 'btn btn-sm btn-info', onClick: this.props.makeTransaction, type: 'submit' },
+                _react2.default.createElement('i', { className: 'fa fa-send push-5-r' }),
+                ' Transfer'
+            )];
+            var transactions = Object.keys(this.props.data).length > 0 ? this.props.data.transactions : [];
             return _react2.default.createElement(
                 'main',
                 { id: 'main-container', style: { minHeight: '263px' } },
@@ -43663,13 +43686,13 @@ var Dashboard = function (_React$Component) {
                                 _react2.default.createElement(
                                     'div',
                                     { className: 'col-md-4' },
-                                    _react2.default.createElement(_userId2.default, null)
+                                    _react2.default.createElement(_userId2.default, { id: this.props.data.unique_id })
                                 ),
                                 _react2.default.createElement('div', { className: 'col-md-4' }),
                                 _react2.default.createElement(
                                     'div',
                                     { className: 'col-md-4' },
-                                    _react2.default.createElement(_wallet2.default, null)
+                                    _react2.default.createElement(_wallet2.default, { balance: this.props.data.wallet_balance })
                                 )
                             )
                         ),
@@ -43694,6 +43717,51 @@ var Dashboard = function (_React$Component) {
                                     _react2.default.createElement(
                                         'tbody',
                                         null,
+                                        transactions.map(function (transaction) {
+                                            return _react2.default.createElement(
+                                                'tr',
+                                                null,
+                                                _react2.default.createElement(
+                                                    'td',
+                                                    { className: 'text-center text-muted', style: { width: '200px' } },
+                                                    transaction.timestamp
+                                                ),
+                                                _react2.default.createElement(
+                                                    'td',
+                                                    { style: { width: '100px' } },
+                                                    '#ID',
+                                                    transaction.id
+                                                ),
+                                                _react2.default.createElement(
+                                                    'td',
+                                                    null,
+                                                    _react2.default.createElement(
+                                                        'a',
+                                                        { className: 'font-w600', href: 'javascript:void(0)' },
+                                                        transaction.wallet_from_owner_fullname
+                                                    )
+                                                ),
+                                                _react2.default.createElement(
+                                                    'td',
+                                                    { className: 'text-right' },
+                                                    _react2.default.createElement(
+                                                        'a',
+                                                        { className: 'font-w600', href: 'javascript:void(0)' },
+                                                        transaction.wallet_to_owner_fullname
+                                                    )
+                                                ),
+                                                _react2.default.createElement(
+                                                    'td',
+                                                    { className: 'text-right', style: { width: '80px' } },
+                                                    _react2.default.createElement(
+                                                        'span',
+                                                        { className: 'font-w600 text-success' },
+                                                        '+ ',
+                                                        transaction.value
+                                                    )
+                                                )
+                                            );
+                                        }),
                                         _react2.default.createElement(
                                             'tr',
                                             null,
@@ -43731,376 +43799,7 @@ var Dashboard = function (_React$Component) {
                                                 _react2.default.createElement(
                                                     'span',
                                                     { className: 'font-w600 text-success' },
-                                                    '+ $44'
-                                                )
-                                            )
-                                        ),
-                                        _react2.default.createElement(
-                                            'tr',
-                                            null,
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-center text-muted' },
-                                                'September 29, 2016'
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                null,
-                                                '#ID59629'
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                null,
-                                                _react2.default.createElement(
-                                                    'a',
-                                                    { className: 'font-w600', href: 'javascript:void(0)' },
-                                                    'Calendious'
-                                                )
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-right' },
-                                                _react2.default.createElement(
-                                                    'a',
-                                                    { className: 'font-w600', href: 'javascript:void(0)' },
-                                                    'Emma Cooper'
-                                                )
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-right' },
-                                                _react2.default.createElement(
-                                                    'span',
-                                                    { className: 'font-w600 text-success' },
-                                                    '+ $44'
-                                                )
-                                            )
-                                        ),
-                                        _react2.default.createElement(
-                                            'tr',
-                                            null,
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-center text-muted' },
-                                                'September 29, 2016'
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                null,
-                                                '#ID59628'
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                null,
-                                                _react2.default.createElement(
-                                                    'a',
-                                                    { className: 'font-w600', href: 'javascript:void(0)' },
-                                                    'Super Badges Pack'
-                                                )
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-right' },
-                                                _react2.default.createElement(
-                                                    'a',
-                                                    { className: 'font-w600', href: 'javascript:void(0)' },
-                                                    'Ronald George'
-                                                )
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-right' },
-                                                _react2.default.createElement(
-                                                    'span',
-                                                    { className: 'font-w600 text-success' },
-                                                    '+ $58'
-                                                )
-                                            )
-                                        ),
-                                        _react2.default.createElement(
-                                            'tr',
-                                            null,
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-center text-muted' },
-                                                'September 29, 2016'
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                null,
-                                                '#ID59627'
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                null,
-                                                _react2.default.createElement(
-                                                    'a',
-                                                    { className: 'font-w600', href: 'javascript:void(0)' },
-                                                    'Todo App'
-                                                )
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-right' },
-                                                _react2.default.createElement(
-                                                    'a',
-                                                    { className: 'font-w600', href: 'javascript:void(0)' },
-                                                    'Craig Stone'
-                                                )
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-right' },
-                                                _react2.default.createElement(
-                                                    'span',
-                                                    { className: 'font-w600 text-success' },
-                                                    '+ $46'
-                                                )
-                                            )
-                                        ),
-                                        _react2.default.createElement(
-                                            'tr',
-                                            null,
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-center text-muted' },
-                                                'September 29, 2016'
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                null,
-                                                '#ID59626'
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                null,
-                                                _react2.default.createElement(
-                                                    'a',
-                                                    { className: 'font-w600', href: 'javascript:void(0)' },
-                                                    'Mailday'
-                                                )
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-right' },
-                                                _react2.default.createElement(
-                                                    'a',
-                                                    { className: 'font-w600', href: 'javascript:void(0)' },
-                                                    'Vincent Sims'
-                                                )
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-right' },
-                                                _react2.default.createElement(
-                                                    'span',
-                                                    { className: 'font-w600 text-success' },
-                                                    '+ $52'
-                                                )
-                                            )
-                                        ),
-                                        _react2.default.createElement(
-                                            'tr',
-                                            null,
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-center text-muted' },
-                                                'September 29, 2016'
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                null,
-                                                '#ID59625'
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                null,
-                                                _react2.default.createElement(
-                                                    'a',
-                                                    { className: 'font-w600', href: 'javascript:void(0)' },
-                                                    'Super Badges Pack'
-                                                )
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-right' },
-                                                _react2.default.createElement(
-                                                    'a',
-                                                    { className: 'font-w600', href: 'javascript:void(0)' },
-                                                    'Ann Parker'
-                                                )
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-right' },
-                                                _react2.default.createElement(
-                                                    'span',
-                                                    { className: 'font-w600 text-success' },
-                                                    '+ $58'
-                                                )
-                                            )
-                                        ),
-                                        _react2.default.createElement(
-                                            'tr',
-                                            null,
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-center text-muted' },
-                                                'September 29, 2016'
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                null,
-                                                '#ID59624'
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                null,
-                                                _react2.default.createElement(
-                                                    'a',
-                                                    { className: 'font-w600', href: 'javascript:void(0)' },
-                                                    'Super Badges Pack'
-                                                )
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-right' },
-                                                _react2.default.createElement(
-                                                    'a',
-                                                    { className: 'font-w600', href: 'javascript:void(0)' },
-                                                    'Vincent Sims'
-                                                )
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-right' },
-                                                _react2.default.createElement(
-                                                    'span',
-                                                    { className: 'font-w600 text-success' },
-                                                    '+ $58'
-                                                )
-                                            )
-                                        ),
-                                        _react2.default.createElement(
-                                            'tr',
-                                            null,
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-center text-muted' },
-                                                'September 29, 2016'
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                null,
-                                                '#ID59623'
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                null,
-                                                _react2.default.createElement(
-                                                    'a',
-                                                    { className: 'font-w600', href: 'javascript:void(0)' },
-                                                    'Super Badges Pack'
-                                                )
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-right' },
-                                                _react2.default.createElement(
-                                                    'a',
-                                                    { className: 'font-w600', href: 'javascript:void(0)' },
-                                                    'Dennis Ross'
-                                                )
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-right' },
-                                                _react2.default.createElement(
-                                                    'span',
-                                                    { className: 'font-w600 text-success' },
-                                                    '+ $58'
-                                                )
-                                            )
-                                        ),
-                                        _react2.default.createElement(
-                                            'tr',
-                                            null,
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-center text-muted' },
-                                                'September 29, 2016'
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                null,
-                                                '#ID59622'
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                null,
-                                                _react2.default.createElement(
-                                                    'a',
-                                                    { className: 'font-w600', href: 'javascript:void(0)' },
-                                                    'e-Music'
-                                                )
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-right' },
-                                                _react2.default.createElement(
-                                                    'a',
-                                                    { className: 'font-w600', href: 'javascript:void(0)' },
-                                                    'Joshua Munoz'
-                                                )
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-right' },
-                                                _react2.default.createElement(
-                                                    'span',
-                                                    { className: 'font-w600 text-success' },
-                                                    '+ $50'
-                                                )
-                                            )
-                                        ),
-                                        _react2.default.createElement(
-                                            'tr',
-                                            null,
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-center text-muted' },
-                                                'September 28, 2016'
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                null,
-                                                '#ID59621'
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                null,
-                                                _react2.default.createElement(
-                                                    'a',
-                                                    { className: 'font-w600', href: 'javascript:void(0)' },
-                                                    'e-Music'
-                                                )
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-right' },
-                                                _react2.default.createElement(
-                                                    'a',
-                                                    { className: 'font-w600', href: 'javascript:void(0)' },
-                                                    'Roger Hart'
-                                                )
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-right' },
-                                                _react2.default.createElement(
-                                                    'span',
-                                                    { className: 'font-w600 text-success' },
-                                                    '+ $50'
+                                                    '+ 44'
                                                 )
                                             )
                                         )
@@ -44117,6 +43816,39 @@ var Dashboard = function (_React$Component) {
                                     'Load More..'
                                 )
                             )
+                        )
+                    )
+                ),
+                _react2.default.createElement(
+                    _modalWindow2.default,
+                    { header: 'Enter an account ID you want to transfer ocoins to:',
+                        buttons: buttons },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'form-group' },
+                        _react2.default.createElement(
+                            'label',
+                            { className: 'col-xs-12', htmlFor: 'register1-username' },
+                            'ID'
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'col-xs-12' },
+                            _react2.default.createElement('input', { className: 'form-control', onChange: this.props.setTransactionData, type: 'text', id: 'register1-username', name: 'transactionUniqueId', placeholder: 'For instance: 156789' })
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'form-group' },
+                        _react2.default.createElement(
+                            'label',
+                            { className: 'col-xs-12', htmlFor: 'register1-username' },
+                            'Amount of oCoins'
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'col-xs-12' },
+                            _react2.default.createElement('input', { className: 'form-control', onChange: this.props.setTransactionData, type: 'text', id: 'register1-username', name: 'transactionAmount', placeholder: 'For instance: 10' })
                         )
                     )
                 )
@@ -44185,8 +43917,14 @@ var Wallet = function (_React$Component) {
     }
 
     _createClass(Wallet, [{
+        key: 'depositHandler',
+        value: function depositHandler() {
+            $('#modal-fadein').modal('toggle');
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var balance = this.props.balance;
             return _react2.default.createElement(
                 'div',
                 { className: 'block block-themed' },
@@ -44213,7 +43951,7 @@ var Wallet = function (_React$Component) {
                             _react2.default.createElement(
                                 'span',
                                 null,
-                                '400'
+                                balance
                             ),
                             _react2.default.createElement(
                                 'span',
@@ -44241,8 +43979,8 @@ var Wallet = function (_React$Component) {
                             { className: 'col-xs-6' },
                             _react2.default.createElement(
                                 'button',
-                                { className: 'btn btn-info push-5-r push-10', type: 'button' },
-                                _react2.default.createElement('i', { className: 'fa fa-plus' }),
+                                { className: 'btn btn-info push-5-r push-10', onClick: this.depositHandler, type: 'button' },
+                                _react2.default.createElement('i', { className: 'fa fa-location-arrow' }),
                                 ' Deposit'
                             )
                         )
@@ -44333,6 +44071,7 @@ var UserId = function (_React$Component) {
     _createClass(UserId, [{
         key: 'render',
         value: function render() {
+            var id = this.props.id;
             return _react2.default.createElement(
                 'div',
                 { className: 'block block-themed' },
@@ -44348,7 +44087,7 @@ var UserId = function (_React$Component) {
                             _react2.default.createElement(
                                 'button',
                                 { type: 'button', 'data-toggle': 'block-option', 'data-action': 'refresh_toggle', 'data-action-mode': 'demo' },
-                                '134576'
+                                id
                             )
                         )
                     ),
@@ -44378,7 +44117,9 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.fetchData = fetchData;
+exports.makeTransaction = makeTransaction;
 exports.setData = setData;
+exports.setTransactionData = setTransactionData;
 
 var _jquery = __webpack_require__(176);
 
@@ -44394,8 +44135,30 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function fetchData() {
     return function (dispatch, getState) {
         var url = '/profiles/fetch-profile-data/';
-        var userId = 12;
+        var userId = 17;
         _jquery2.default.get(url, { user_id: userId }, function (response) {
+            console.log("Response", response);
+            if (response.message === "ok") {
+                dispatch(setData(response.data));
+            } else {
+                console.log('Error', response);
+            }
+        });
+    };
+}
+
+function makeTransaction() {
+    return function (dispatch, getState) {
+        var url = '/profiles/make-transaction/';
+        var transactionUniqueId = getState().dashboardReducer.transactionData.transactionUniqueId;
+        var transactionAmount = getState().dashboardReducer.transactionData.transactionAmount;
+        var userId = 16;
+        var params = {
+            user_id: userId,
+            transaction_unique_id: transactionUniqueId,
+            transaction_amount: transactionAmount
+        };
+        _jquery2.default.get(url, params, function (response) {
             console.log("Response", response);
             if (response.message === "ok") {
                 dispatch(setData(response.data));
@@ -44413,6 +44176,13 @@ function setData(payload) {
     };
 }
 
+function setTransactionData(payload) {
+    return {
+        type: 'SET_TRANSACTION_DATA',
+        payload: payload
+    };
+}
+
 /***/ }),
 /* 318 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -44424,7 +44194,10 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.default = reducer;
-var INITIAL_STATE = { data: {} };
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var INITIAL_STATE = { data: {}, transactionData: {} };
 
 function reducer() {
     var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : INITIAL_STATE;
@@ -44432,13 +44205,350 @@ function reducer() {
 
     switch (action.type) {
         case 'SET_DASHBOARD_DATA':
-            console.log("Final", Object.assign({}, state, { data: action.payload }));
             return Object.assign({}, state, { data: action.payload });
+            break;
+
+        case 'SET_TRANSACTION_DATA':
+            var name = action.payload.target.name;
+            var value = action.payload.target.value;
+            var updatedData = Object.assign({}, state.transactionData, _defineProperty({}, name, value));
+            console.log("TransactionData", Object.assign({}, state, { transactionData: updatedData }));
+            return Object.assign({}, state, { transactionData: updatedData });
             break;
 
     }
     return state;
 }
+
+/***/ }),
+/* 319 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(7);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _redux = __webpack_require__(45);
+
+var _reactRedux = __webpack_require__(80);
+
+var _companySignUpActions = __webpack_require__(321);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+__webpack_require__(305);
+
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        companySignUpData: state.companySignUpReducer.data
+    };
+};
+
+var matchDispatchToProps = function matchDispatchToProps(dispatch) {
+    return (0, _redux.bindActionCreators)({
+        setCompanySignUpData: _companySignUpActions.setCompanySignUpData,
+        submitCompanyData: _companySignUpActions.submitCompanyData
+    }, dispatch);
+};
+
+var CompanySignUp = function (_React$Component) {
+    _inherits(CompanySignUp, _React$Component);
+
+    function CompanySignUp() {
+        _classCallCheck(this, CompanySignUp);
+
+        return _possibleConstructorReturn(this, (CompanySignUp.__proto__ || Object.getPrototypeOf(CompanySignUp)).apply(this, arguments));
+    }
+
+    _createClass(CompanySignUp, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                { className: 'col-md-12' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'container' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'row' },
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'col-md-4 col-md-offset-4' },
+                            _react2.default.createElement('img', { src: '../../user-platform/pages/img/logo-black-navbar.png', id: 'registration-logo' }),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'login-panel panel panel-default' },
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'panel-heading' },
+                                    _react2.default.createElement(
+                                        'h3',
+                                        { className: 'panel-title' },
+                                        'Please Register'
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'panel-body' },
+                                    _react2.default.createElement(
+                                        'form',
+                                        { onSubmit: this.props.submitCompanyData },
+                                        _react2.default.createElement(
+                                            'fieldset',
+                                            null,
+                                            _react2.default.createElement(
+                                                'div',
+                                                { className: 'form-group' },
+                                                _react2.default.createElement('input', { className: 'form-control', onChange: this.props.setCompanySignUpData, value: this.props.companySignUpData.username, placeholder: 'Username', name: 'username', type: 'name', autoFocus: true })
+                                            ),
+                                            _react2.default.createElement(
+                                                'div',
+                                                { className: 'form-group' },
+                                                _react2.default.createElement('input', { className: 'form-control', onChange: this.props.setCompanySignUpData, value: this.props.companySignUpData.companyName, placeholder: 'Company Name', name: 'companyName', type: 'name' })
+                                            ),
+                                            _react2.default.createElement(
+                                                'div',
+                                                { className: 'form-group' },
+                                                _react2.default.createElement('input', { className: 'form-control', onChange: this.props.setCompanySignUpData, placeholder: 'Email', name: 'email', type: 'email', value: this.props.companySignUpData.email })
+                                            ),
+                                            _react2.default.createElement(
+                                                'div',
+                                                { className: 'form-group' },
+                                                _react2.default.createElement('input', { className: 'form-control', onChange: this.props.setCompanySignUpData, placeholder: 'Phone', name: 'phone', type: 'text', value: this.props.companySignUpData.phone })
+                                            ),
+                                            _react2.default.createElement(
+                                                'div',
+                                                { className: 'form-group' },
+                                                _react2.default.createElement('input', { className: 'form-control', onChange: this.props.setCompanySignUpData, placeholder: 'Contacts', name: 'contacts', type: 'text', value: this.props.companySignUpData.contacts })
+                                            ),
+                                            _react2.default.createElement(
+                                                'div',
+                                                { className: 'form-group' },
+                                                _react2.default.createElement('input', { className: 'form-control', onChange: this.props.setCompanySignUpData, placeholder: 'Password', name: 'password', type: 'password', value: this.props.companySignUpData.password })
+                                            ),
+                                            _react2.default.createElement(
+                                                'div',
+                                                { className: 'form-group' },
+                                                _react2.default.createElement('input', { className: 'form-control', onChange: this.props.setCompanySignUpData, placeholder: 'Confirm password', name: 'passwordConfirm', type: 'password', value: this.props.companySignUpData.passwordConfirm })
+                                            ),
+                                            _react2.default.createElement(
+                                                'button',
+                                                { type: 'submit', className: 'btn btn-lg btn-success btn-block' },
+                                                'Register'
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return CompanySignUp;
+}(_react2.default.Component);
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, matchDispatchToProps)(CompanySignUp);
+
+/***/ }),
+/* 320 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = reducer;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+/**
+ * Created by faradj on 5/13/17.
+ */
+var INITIAL_STATE = { data: {} };
+
+function reducer() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : INITIAL_STATE;
+    var action = arguments[1];
+
+    switch (action.type) {
+        case 'SET_COMPANY_SIGNUP_DATA':
+            var name = action.payload.target.name;
+            var value = action.payload.target.value;
+            var updatedData = Object.assign({}, state.data, _defineProperty({}, name, value));
+            console.log("CompanyData", Object.assign({}, state, { data: updatedData }));
+            return Object.assign({}, state, { data: updatedData });
+            break;
+
+    }
+    return state;
+}
+
+/***/ }),
+/* 321 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.submitCompanyData = submitCompanyData;
+exports.setCompanySignUpData = setCompanySignUpData;
+
+var _jquery = __webpack_require__(176);
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+var _reactRouter = __webpack_require__(47);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * Created by faradj on 5/13/17.
+ */
+function submitCompanyData(e) {
+    e.preventDefault();
+    return function (dispatch, getState) {
+        var url = '/profiles/create-company-profile';
+        var signUpData = getState().companySignUpReducer.data;
+        console.log("Hack", signUpData);
+        _jquery2.default.get(url, signUpData, function (response) {
+            if (response.message === "ok") {
+                _reactRouter.browserHistory.push('/dashboard');
+            } else {
+                console.log('Error', response);
+            }
+        });
+    };
+}
+
+function setCompanySignUpData(payload) {
+    return {
+        type: 'SET_COMPANY_SIGNUP_DATA',
+        payload: payload
+    };
+}
+
+/***/ }),
+/* 322 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(7);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by faradj on 4/18/17.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+
+var ModalWindow = function (_React$Component) {
+    _inherits(ModalWindow, _React$Component);
+
+    function ModalWindow() {
+        _classCallCheck(this, ModalWindow);
+
+        return _possibleConstructorReturn(this, (ModalWindow.__proto__ || Object.getPrototypeOf(ModalWindow)).apply(this, arguments));
+    }
+
+    _createClass(ModalWindow, [{
+        key: "render",
+        value: function render() {
+            var header = this.props.header;
+            var content = this.props.children;
+            var buttons = this.props.buttons;
+            return _react2.default.createElement(
+                "div",
+                { className: "modal fade in", id: "modal-fadein", tabIndex: "-1", role: "dialog", "aria-hidden": "true", style: { display: 'none' } },
+                _react2.default.createElement(
+                    "div",
+                    { className: "modal-dialog" },
+                    _react2.default.createElement(
+                        "div",
+                        { className: "modal-content" },
+                        _react2.default.createElement(
+                            "div",
+                            { className: "block block-themed block-transparent remove-margin-b" },
+                            _react2.default.createElement(
+                                "div",
+                                { className: "block-header bg-primary-dark" },
+                                _react2.default.createElement(
+                                    "ul",
+                                    { className: "block-options" },
+                                    _react2.default.createElement(
+                                        "li",
+                                        null,
+                                        _react2.default.createElement(
+                                            "button",
+                                            { type: "button", "data-dismiss": "modal" },
+                                            _react2.default.createElement("i", { className: "si si-close" })
+                                        )
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "h3",
+                                    { className: "block-title" },
+                                    header
+                                )
+                            ),
+                            _react2.default.createElement(
+                                "div",
+                                { className: "block-content" },
+                                content
+                            )
+                        ),
+                        _react2.default.createElement(
+                            "div",
+                            { className: "modal-footer" },
+                            buttons
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return ModalWindow;
+}(_react2.default.Component);
+
+exports.default = ModalWindow;
 
 /***/ })
 /******/ ]);

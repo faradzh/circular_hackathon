@@ -38,6 +38,47 @@ def create_profile(request):
 
 
 @csrf_exempt
+def create_company_profile(request):
+    if request.method == 'GET':
+        username = request.GET.get('username')
+        # fullname = request.GET.get('fullname')
+        email = request.GET.get('email')
+        # phone = request.GET.get('phone')
+        # contacts = request.GET.get('contacts')
+        password = request.GET.get('password')
+        password_confirm = request.GET.get('passwordConfirm')
+        user = User.objects.create_user(username, email)
+        user.set_password(password)
+        user.save()
+        # user.profile.create(fullname=fullname, phone=phone, contacts=contacts)
+        # user.profile.save()
+        return JsonResponse({"message": "ok"}, status=201)
+
+
+@csrf_exempt
+def make_transaction(request):
+    response_data = dict()
+    if request.method == 'GET':
+        user_id = request.GET.get('user_id')
+        transaction_unique_id = request.GET.get('transaction_unique_id')
+        transaction_amount = request.GET.get('transaction_amount')
+        try:
+            profile = Profile.objects.get(user_id=user_id)
+            transer_from_wallet = profile.wallet
+            transfer_to_profile = Profile.objects.get(unique_id=transaction_unique_id)
+            transfer_to_wallet = transfer_to_profile.wallet
+            transer_from_wallet.balance -= float(transaction_amount)
+            transfer_to_wallet.balance += float(transaction_amount)
+            transer_from_wallet.save()
+            transfer_to_wallet.save()
+
+            Transaction.objects.create(wallet_from=transer_from_wallet, wallet_to=transfer_to_wallet, value=transaction_amount)
+        except Profile.DoesNotExist:
+            pass
+    return JsonResponse({"message": "ok"}, status=201)
+
+
+@csrf_exempt
 def fetch_profile_data(request):
     response_data = dict()
     if request.method == 'GET':
@@ -52,8 +93,8 @@ def fetch_profile_data(request):
                 response_data["transactions"].append({
                     "id": transaction.id,
                     "timestamp": transaction.timestamp,
-                    "wallet_from_owner_fullname": transaction.wallet_from.profile.first_name,
-                    "wallet_to_owner_fullname": transaction.wallet_to.profile.last_name,
+                    "wallet_from_owner_fullname": transaction.wallet_from.profile.user.username,
+                    "wallet_to_owner_fullname": transaction.wallet_to.profile.user.username,
                     "value": transaction.value
                 })
         except Profile.DoesNotExist:
