@@ -26424,8 +26424,8 @@ var Index = function (_React$Component) {
                   'li',
                   { className: 'nav-item active', style: { marginLeft: '50px' } },
                   _react2.default.createElement(
-                    'a',
-                    { className: 'nav-link', href: 'base_pages_login_v2.html' },
+                    _reactRouter.Link,
+                    { to: '/login', className: 'nav-link' },
                     'Sign In'
                   )
                 )

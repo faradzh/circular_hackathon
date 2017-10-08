@@ -20,7 +20,7 @@ export default class Index extends React.Component {
               <div className="collapse navbar-collapse" id="navbarResponsive">
                 <ul className="navbar-nav ml-auto">
                   <li className="nav-item active" style={{marginLeft:'50px'}}>
-                    <a className="nav-link" href="base_pages_login_v2.html">Sign In</a>
+                    <Link to="/login" className="nav-link">Sign In</Link>
                   </li>
                 </ul>
               </div>
