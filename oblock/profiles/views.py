@@ -84,15 +84,15 @@ def make_transaction(request):
         transaction_amount = request.GET.get('transaction_amount')
         try:
             profile = Profile.objects.get(user_id=user_id)
-            transer_from_wallet = profile.wallet
+            transfer_from_wallet = profile.wallet
             transfer_to_profile = Profile.objects.get(unique_id=transaction_unique_id)
             transfer_to_wallet = transfer_to_profile.wallet
-            transer_from_wallet.balance -= float(transaction_amount)
+            transfer_from_wallet.balance -= float(transaction_amount)
             transfer_to_wallet.balance += float(transaction_amount)
-            transer_from_wallet.save()
+            transfer_from_wallet.save()
             transfer_to_wallet.save()
 
-            Transaction.objects.create(wallet_from=transer_from_wallet, wallet_to=transfer_to_wallet, value=transaction_amount)
+            Transaction.objects.create(wallet_from=transfer_from_wallet, wallet_to=transfer_to_wallet, value=transaction_amount)
         except Profile.DoesNotExist:
             pass
     return JsonResponse({"message": "ok"}, status=201)

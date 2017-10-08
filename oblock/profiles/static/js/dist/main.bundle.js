@@ -25844,6 +25844,10 @@ var _modalWindow = __webpack_require__(151);
 
 var _modalWindow2 = _interopRequireDefault(_modalWindow);
 
+var _auth = __webpack_require__(83);
+
+var _auth2 = _interopRequireDefault(_auth);
+
 var _dashboardActions = __webpack_require__(149);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -25872,9 +25876,21 @@ var Dashboard = function (_React$Component) {
     _inherits(Dashboard, _React$Component);
 
     function Dashboard() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
         _classCallCheck(this, Dashboard);
 
-        return _possibleConstructorReturn(this, (Dashboard.__proto__ || Object.getPrototypeOf(Dashboard)).apply(this, arguments));
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Dashboard.__proto__ || Object.getPrototypeOf(Dashboard)).call.apply(_ref, [this].concat(args))), _this), _this.logOutHandler = function (e) {
+            e.preventDefault();
+            _auth2.default.logout();
+            window.location.reload();
+        }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
     _createClass(Dashboard, [{
@@ -25895,6 +25911,24 @@ var Dashboard = function (_React$Component) {
             return _react2.default.createElement(
                 'main',
                 { id: 'main-container', style: { minHeight: '263px' } },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'content-mini content-boxed' },
+                    _react2.default.createElement(
+                        'ul',
+                        { className: 'nav nav-pills nav-sub-header push-r', style: { float: 'right' } },
+                        _react2.default.createElement(
+                            'li',
+                            { onClick: this.logOutHandler },
+                            _react2.default.createElement(
+                                'a',
+                                { href: '' },
+                                _react2.default.createElement('i', { className: 'fa fa-sign-out push-5-r' }),
+                                'Log Out'
+                            )
+                        )
+                    )
+                ),
                 _react2.default.createElement(
                     'div',
                     { className: 'content content-boxed' },
@@ -26008,48 +26042,7 @@ var Dashboard = function (_React$Component) {
                                                     )
                                                 )
                                             );
-                                        }),
-                                        _react2.default.createElement(
-                                            'tr',
-                                            null,
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-center text-muted', style: { width: '200px' } },
-                                                'September 29, 2016'
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                { style: { width: '100px' } },
-                                                '#ID59630'
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                null,
-                                                _react2.default.createElement(
-                                                    'a',
-                                                    { className: 'font-w600', href: 'javascript:void(0)' },
-                                                    'Calendious'
-                                                )
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-right' },
-                                                _react2.default.createElement(
-                                                    'a',
-                                                    { className: 'font-w600', href: 'javascript:void(0)' },
-                                                    'Ethan Howard'
-                                                )
-                                            ),
-                                            _react2.default.createElement(
-                                                'td',
-                                                { className: 'text-right', style: { width: '80px' } },
-                                                _react2.default.createElement(
-                                                    'span',
-                                                    { className: 'font-w600 text-success' },
-                                                    '+ 44'
-                                                )
-                                            )
-                                        )
+                                        })
                                     )
                                 )
                             ),
@@ -26386,7 +26379,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 __webpack_require__(315);
 __webpack_require__(314);
-var imageSrc = __webpack_require__(320);
+var imageSrc = __webpack_require__(81);
 
 var Index = function (_React$Component) {
   _inherits(Index, _React$Component);
@@ -26398,9 +26391,6 @@ var Index = function (_React$Component) {
   }
 
   _createClass(Index, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {}
-  }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
@@ -26448,7 +26438,7 @@ var Index = function (_React$Component) {
           { className: 'header', id: 'top' },
           _react2.default.createElement(
             'div',
-            { className: 'text-vertical-center' },
+            { className: 'text-vertical-center', style: { color: 'black' } },
             _react2.default.createElement('img', { src: imageSrc, style: { width: 'auto', height: '200' }, alt: '' }),
             _react2.default.createElement('br', null),
             _react2.default.createElement(
@@ -26473,8 +26463,8 @@ var Index = function (_React$Component) {
               'TELL ME MORE'
             ),
             _react2.default.createElement(
-              'a',
-              { href: 'base_pages_register_v2.html', className: 'btn btn-dark btn-lg js-scroll-trigger' },
+              _reactRouter.Link,
+              { to: '/company-sign-up', className: 'btn btn-dark btn-lg js-scroll-trigger' },
               'REGISTER'
             )
           )
@@ -27388,7 +27378,7 @@ function makeTransaction() {
         var url = '/profiles/make-transaction/';
         var transactionUniqueId = getState().dashboardReducer.transactionData.transactionUniqueId;
         var transactionAmount = getState().dashboardReducer.transactionData.transactionAmount;
-        var userId = 16;
+        var userId = localStorage.currentUser ? JSON.parse(localStorage.currentUser).id : '';
         var params = {
             user_id: userId,
             transaction_unique_id: transactionUniqueId,
@@ -27397,6 +27387,7 @@ function makeTransaction() {
         _jquery2.default.get(url, params, function (response) {
             console.log("Response", response);
             if (response.message === "ok") {
+                window.location.reload();
                 dispatch(setData(response.data));
             } else {
                 console.log('Error', response);
@@ -44882,12 +44873,7 @@ function symbolObservablePonyfill(root) {
 module.exports = __webpack_require__.p + "images/93386567c519c39b4c8fa5d95d4e3e53.jpg";
 
 /***/ }),
-/* 320 */
-/***/ (function(module, exports) {
-
-module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWwAAAFsCAYAAADon4O5AAAACXBIWXMAAAsTAAALEwEAmpwYAAAKT2lDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjanVNnVFPpFj333vRCS4iAlEtvUhUIIFJCi4AUkSYqIQkQSoghodkVUcERRUUEG8igiAOOjoCMFVEsDIoK2AfkIaKOg6OIisr74Xuja9a89+bN/rXXPues852zzwfACAyWSDNRNYAMqUIeEeCDx8TG4eQuQIEKJHAAEAizZCFz/SMBAPh+PDwrIsAHvgABeNMLCADATZvAMByH/w/qQplcAYCEAcB0kThLCIAUAEB6jkKmAEBGAYCdmCZTAKAEAGDLY2LjAFAtAGAnf+bTAICd+Jl7AQBblCEVAaCRACATZYhEAGg7AKzPVopFAFgwABRmS8Q5ANgtADBJV2ZIALC3AMDOEAuyAAgMADBRiIUpAAR7AGDIIyN4AISZABRG8lc88SuuEOcqAAB4mbI8uSQ5RYFbCC1xB1dXLh4ozkkXKxQ2YQJhmkAuwnmZGTKBNA/g88wAAKCRFRHgg/P9eM4Ors7ONo62Dl8t6r8G/yJiYuP+5c+rcEAAAOF0ftH+LC+zGoA7BoBt/qIl7gRoXgugdfeLZrIPQLUAoOnaV/Nw+H48PEWhkLnZ2eXk5NhKxEJbYcpXff5nwl/AV/1s+X48/Pf14L7iJIEyXYFHBPjgwsz0TKUcz5IJhGLc5o9H/LcL//wd0yLESWK5WCoU41EScY5EmozzMqUiiUKSKcUl0v9k4t8s+wM+3zUAsGo+AXuRLahdYwP2SycQWHTA4vcAAPK7b8HUKAgDgGiD4c93/+8//UegJQCAZkmScQAAXkQkLlTKsz/HCAAARKCBKrBBG/TBGCzABhzBBdzBC/xgNoRCJMTCQhBCCmSAHHJgKayCQiiGzbAdKmAv1EAdNMBRaIaTcA4uwlW4Dj1wD/phCJ7BKLyBCQRByAgTYSHaiAFiilgjjggXmYX4IcFIBBKLJCDJiBRRIkuRNUgxUopUIFVIHfI9cgI5h1xGupE7yAAygvyGvEcxlIGyUT3UDLVDuag3GoRGogvQZHQxmo8WoJvQcrQaPYw2oefQq2gP2o8+Q8cwwOgYBzPEbDAuxsNCsTgsCZNjy7EirAyrxhqwVqwDu4n1Y8+xdwQSgUXACTYEd0IgYR5BSFhMWE7YSKggHCQ0EdoJNwkDhFHCJyKTqEu0JroR+cQYYjIxh1hILCPWEo8TLxB7iEPENyQSiUMyJ7mQAkmxpFTSEtJG0m5SI+ksqZs0SBojk8naZGuyBzmULCAryIXkneTD5DPkG+Qh8lsKnWJAcaT4U+IoUspqShnlEOU05QZlmDJBVaOaUt2ooVQRNY9aQq2htlKvUYeoEzR1mjnNgxZJS6WtopXTGmgXaPdpr+h0uhHdlR5Ol9BX0svpR+iX6AP0dwwNhhWDx4hnKBmbGAcYZxl3GK+YTKYZ04sZx1QwNzHrmOeZD5lvVVgqtip8FZHKCpVKlSaVGyovVKmqpqreqgtV81XLVI+pXlN9rkZVM1PjqQnUlqtVqp1Q61MbU2epO6iHqmeob1Q/pH5Z/YkGWcNMw09DpFGgsV/jvMYgC2MZs3gsIWsNq4Z1gTXEJrHN2Xx2KruY/R27iz2qqaE5QzNKM1ezUvOUZj8H45hx+Jx0TgnnKKeX836K3hTvKeIpG6Y0TLkxZVxrqpaXllirSKtRq0frvTau7aedpr1Fu1n7gQ5Bx0onXCdHZ4/OBZ3nU9lT3acKpxZNPTr1ri6qa6UbobtEd79up+6Ynr5egJ5Mb6feeb3n+hx9L/1U/W36p/VHDFgGswwkBtsMzhg8xTVxbzwdL8fb8VFDXcNAQ6VhlWGX4YSRudE8o9VGjUYPjGnGXOMk423GbcajJgYmISZLTepN7ppSTbmmKaY7TDtMx83MzaLN1pk1mz0x1zLnm+eb15vft2BaeFostqi2uGVJsuRaplnutrxuhVo5WaVYVVpds0atna0l1rutu6cRp7lOk06rntZnw7Dxtsm2qbcZsOXYBtuutm22fWFnYhdnt8Wuw+6TvZN9un2N/T0HDYfZDqsdWh1+c7RyFDpWOt6azpzuP33F9JbpL2dYzxDP2DPjthPLKcRpnVOb00dnF2e5c4PziIuJS4LLLpc+Lpsbxt3IveRKdPVxXeF60vWdm7Obwu2o26/uNu5p7ofcn8w0nymeWTNz0MPIQ+BR5dE/C5+VMGvfrH5PQ0+BZ7XnIy9jL5FXrdewt6V3qvdh7xc+9j5yn+M+4zw33jLeWV/MN8C3yLfLT8Nvnl+F30N/I/9k/3r/0QCngCUBZwOJgUGBWwL7+Hp8Ib+OPzrbZfay2e1BjKC5QRVBj4KtguXBrSFoyOyQrSH355jOkc5pDoVQfujW0Adh5mGLw34MJ4WHhVeGP45wiFga0TGXNXfR3ENz30T6RJZE3ptnMU85ry1KNSo+qi5qPNo3ujS6P8YuZlnM1VidWElsSxw5LiquNm5svt/87fOH4p3iC+N7F5gvyF1weaHOwvSFpxapLhIsOpZATIhOOJTwQRAqqBaMJfITdyWOCnnCHcJnIi/RNtGI2ENcKh5O8kgqTXqS7JG8NXkkxTOlLOW5hCepkLxMDUzdmzqeFpp2IG0yPTq9MYOSkZBxQqohTZO2Z+pn5mZ2y6xlhbL+xW6Lty8elQfJa7OQrAVZLQq2QqboVFoo1yoHsmdlV2a/zYnKOZarnivN7cyzytuQN5zvn//tEsIS4ZK2pYZLVy0dWOa9rGo5sjxxedsK4xUFK4ZWBqw8uIq2Km3VT6vtV5eufr0mek1rgV7ByoLBtQFr6wtVCuWFfevc1+1dT1gvWd+1YfqGnRs+FYmKrhTbF5cVf9go3HjlG4dvyr+Z3JS0qavEuWTPZtJm6ebeLZ5bDpaql+aXDm4N2dq0Dd9WtO319kXbL5fNKNu7g7ZDuaO/PLi8ZafJzs07P1SkVPRU+lQ27tLdtWHX+G7R7ht7vPY07NXbW7z3/T7JvttVAVVN1WbVZftJ+7P3P66Jqun4lvttXa1ObXHtxwPSA/0HIw6217nU1R3SPVRSj9Yr60cOxx++/p3vdy0NNg1VjZzG4iNwRHnk6fcJ3/ceDTradox7rOEH0x92HWcdL2pCmvKaRptTmvtbYlu6T8w+0dbq3nr8R9sfD5w0PFl5SvNUyWna6YLTk2fyz4ydlZ19fi753GDborZ752PO32oPb++6EHTh0kX/i+c7vDvOXPK4dPKy2+UTV7hXmq86X23qdOo8/pPTT8e7nLuarrlca7nuer21e2b36RueN87d9L158Rb/1tWeOT3dvfN6b/fF9/XfFt1+cif9zsu72Xcn7q28T7xf9EDtQdlD3YfVP1v+3Njv3H9qwHeg89HcR/cGhYPP/pH1jw9DBY+Zj8uGDYbrnjg+OTniP3L96fynQ89kzyaeF/6i/suuFxYvfvjV69fO0ZjRoZfyl5O/bXyl/erA6xmv28bCxh6+yXgzMV70VvvtwXfcdx3vo98PT+R8IH8o/2j5sfVT0Kf7kxmTk/8EA5jz/GMzLdsAAAAgY0hSTQAAeiUAAICDAAD5/wAAgOkAAHUwAADqYAAAOpgAABdvkl/FRgAAC+dJREFUeNrs3UGyE0cQRdHe/2bBKyhGRBCEHZivrqp8mWdwhsaiK/Oq1V/A8+37Pw8EWh9yDYnjItAlwLs5IwQbMW7EWSPYCLOQg2Aj0AKOYCPOiDiCjUiLN4KNQCPgCDYCjYAj2Ii0eCPYiDTijWAj1Ag3go1gId6CjVC3CJLrhGAj0s2D4loj2IyKh/NwHgi2UAuB83Jego3Ft/DOEcEmeMGdjfNFsCm6yM7EuSPYFF1YZ2EezINgYykxJwi2BbSA5sbcCDYNl84ZmCNzJNgUXjDX32yZLcGm8DK59ubNvAk2hZfHNcf8CTYWBfNoHgXbclgMzCaCbRnArAo2hh+za3YF28Abdswxgm3AwVwLtqE20JhxMy7Y0wbZNca8I9juOMDsC7aBNazYA3sg2M2H1PXFTtgJwXY3AfZDsA2jQQS7ItjNB9C1xd7YG8F2pwB2SLANmiED+yTYhgvslb0SbEMF9kuwDZNBArsm2AYI7JydE+ztg2MZQbQFW6zBHtrDmcE2JGAfBdtgAPZTsA0DiLY9HRBsQwD2VbAdPmBvBduhg2jb3yHBdthgj9vusUMWa7DPgh17uJYF+u22YDtUwH4LtsME7HmzYDtEEO0x++7wLAHYe8F2aID9nx5ssQZGdsAhAaIt2A4H0IWJwRZrYHwfJh2IwQbRFmwHAWiFYHsUAuhFQLDFGtCNQcE2wCDagu2CA6It2GINaElAsMUa0JQhwTagQNuuuKiAaIf0xccWQLBDGuNCAqId0hofVQDRFmyxBkS7S7A9CgG0Z0iwDR4wqj8uFiDaIR1ykQDRDumRCwQItmCLNSDaU4NtsIDRbfIuBhDSJxcDIKRTPm4AhLTKuxZASK/cXQOENMvdNUBIt8QaIKRfHoUAhDTM3TVASMfcXQOEtEysAUKaJtgAQ4Mt1oBob2qbYAMMDLZYA6It2ADuslu9+wB0vst2dw0Q0jp31wAhvXN3DRDSPHfXACHdc3cNENI+d9cAIf1zdw0Q0kB31wAhHXR3DRByl+3uGiDkLluwARoHW6wBLnRRsAEEW7ABwb4ZbLEGuNRHwQZoGGzfvQa42Eh31wAhd9mCDdAs2GINcLmXgg0g2IINCPbpYIs1QIFoCzaAYDs0QLATgu3AANE+HGx31wBF7rIFG2BwsB0UwIaGursGCLnLFmwAwQYQ7MrBdiiAPmxqqbtrwQbBDrnLFmzBBsEWbACqBtvBAGxsqrtrgJC7bMEGGBZsBwIg2ACeYwt2z0Hw+nFmQ4Lt+bXl8fpxZkUfi7i7tjxeP84s5C5bsC2P148zE2wsj+U3cwg2go0zE2zBtjxeP84sIdi+IWJ5vH6cWeFvigi25fH6cWZDgu0ALI/Xb+Zcj0OPRQTb8nj9ODPBxvJYfjOHYCPYODPBFmzL4/XjzKoH2zdELI/XjzMr/k0RwbY8Xj/ObECwXXjL4/WbOWd28LGIYFserx9nJthYHstv5hDsnItdeXkq/R5uX7O0Oa/wurVAsFv+oODENfu//4+Kr/259P9Jm/lqr/3mm/oSbMHeGerd1+1Pv376659whmmv/eabrDtswf7SRd313765POmv/9b5PYU+dVQ8u9OfHLt1R7APXdDbv9bfLM/O11892G9f81ufOKrO3o1r4Bm2YB9dzJN3Oydef9Vgn4jUyU8FFX/dU8/Hu/bmy8H2pxzPDsqJu52TQakW7NQzfMLeDNLesFr8bEyw7/wkeufdzo2P7FWCvYLP8Pl273FL5cdYvswg2CW+NpT6fDUp2Ekzc/MHmlUfY/n2mWCXGpadwU6NVdr3dHf8YDDhdac9xhodbHfXtRc+7U8oJgf77fhV/xOyyY+x4qMt2DV+b4l3aLs+ISSeYaW71aRgT/8T1ILdINgr+O6yQrDT5ij1k0Hqp0LBFus2H08Tg70aBTtp7t48s6l/gZRgNwn2Cg32GvZm9fbfmjgh2GIt2C3+isjUYD+C/eUzXMOCLdaC3SbYj2B/fLeWHOzuMyfWgt3mcYhg9wj2Exjs079PsRZswRbs+JB1DbZYC3bLxyFdvmmwBFuwxVqwJwT7EWzBbrI/Yi3Ygi3Ygh0aG4EWbMFu8G2DzsFegi3Wgi3Ygi3Y7rAFe9QBCLZgV/oGxYQfOor0B7EWbMEWbHfYp7/WJ9aCLdiC7YeOQX9wRrAFW7B9S0Sw/UnH1sF+PvqPBdsfnBFswf4gUIIt2GOWXbAFO/mToL9aVbD9XSKhb36CPeeGR7QFu81dtmDPetOdGGzRFmzBHhrsameY+A8YVDhz/wCvYMfdofkXZ/wTYdNuEgRbsFsEOylalf5NR/8Ib96nuqnRFuzgxyKrSbAT79ArBXsNDPbUaAt28LCs4LvMasFe3nAjH8NNi/bxYIt2zUcKK/C6Cfb986vwJjMl2kuwMwdlbQr2CrtmyT/A6vKGW+VTwYRofxzs6Y9Fbg3K2hSricF+ClyDFfzaKz3G6R7tL7dWsO8NytoYqt2v/+3/z87rkBDr0/N3+5s907+jLdhhg7J70dOWafe1SJmTG6+96rerJj2CFeyig7IOBS8tKEnh270HKa899VOMYA96xpSwiLv+f6dff7UzXBc/ga3i8/yIdkawJ3/1ptKjiv/6ddNf/6QzfMLOLvWHu7HfEBHsvRf41nPlbq9/yhmeeu2pf0JYsH8Ltsci+xfn5vdp019/lfCZvXt/OrNDez46O8Hef9G9/vylcXYINoBgCzaAYAs2QG6wRRtg8zdE/i3Y7rIBCt5dCzaAYAPw9uPmbb8wAIININgeiwDUfH79drBFG2BjTwUbQLABOBFsz7EBCj2/3hFs0QbY1FHBBhBsAME+FWzPsfcfCkyiDR9ep6PvDg4FBFsXBFuwQbDHB9tjEYACj0N2Blu0AbEWbADBFmyA8GCLNsDlWAs2gGALNiDWt4It2gCXOynYAIIt2oBY3wq2u2yAi30UbADBFm1ArN/sYtkXBiDYgg0wJtiiDXChh4ININiiDYh1hWC7ywY43MGYdxaAyXfXnwbbXTYg2Af7F/cOAzDx7vqNYLvLBgT7UPdi32kAJt1dvxVsd9mAYB/oXfw7DsCEu+s3g+0uGxDszZ1r884D0Pnu+u1gu8sGBHtj39q9AwF0vLveEWx32YBgb+pa23cigG5NE2yAwcEWbUCsN7yeir9J0QbSYx0VbHfZgLvroGCLNiDWgg0g2KINiHXRZo18cA+Q2Kvx71gAKa1yIQBCGuViAAi2aANiPTXYog2M7pKLA4h1SI98/AAEO6RF3tUAsRZs0QbEWrBFGxjYHu9ygGCHdMfFA8Q6pDc+ngBiHdIZz5QAsRZsj0YAfekabNEGdGVQsEUbaNsUFxgQ65CWuNCAWIc0xAUHxDqkHd0vumiDWAu2d0pAMwRbtAGtCA22aAMaMSzYog1iLdgOBdAFwRZtQA9Cgy3awNgOOCzA/gu2QwPsvWA7PBDrgfvuEEUb7LlgO0zAfgu2QwWxHrjXDla4wT4LtkMG7LFgO2wQ64H769BFG+ytYDt8wL4KtiEAezpwTw2DYQD7Kdith0K4QagF25CAPbSHgm1YwP4JtqERbrBzgm2AwK7ZNcE2SGDHBNtACTfYK8E2XGCfBBtDBvZIsA2cgcPe2BvBzhs+A4hdsSuCbRDBjgg2hhLshGAbUEOKPbAHgm1YwfwLNgYX827eBdsQG2TMOIIdO9CGGnONYBtwMMeCbdgNPGbX7Aq24Tf8mFXBJnURLAPmU7CxGJhH8yjYFsWiYP4QbEtjeTBvgk36Ilkms2W2BJvA5bJg5sgcCTZhy2bhzI7ZEWwCl88CmhNzItgELqSlNBNmQrAJXFLL6uydi2ATuryWeMYZOxvBpmm8LbhzRLAJXHiL77wQbEJDMCUMzgPBpm0oEuPhWiPYCMqhCLk+CDbCjVAj2Ig3Io1gizcijWAj3og0go1wI9TDg73WgmetJeBFmU1+chH4NdjuvgveRZtNBJs/BVvAizzmMJsINn8bbBG/9AzabCLYvBFsAT/wQ0KziWCzI9jTQ77l+plNBJuTwfZ3RQs2gk2jYJ8OfMzv1Wzy048BAJla5iz6VASMAAAAAElFTkSuQmCC"
-
-/***/ }),
+/* 320 */,
 /* 321 */
 /***/ (function(module, exports) {
 

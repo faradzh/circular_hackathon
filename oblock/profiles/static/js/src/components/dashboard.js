@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Wallet from './wallet';
 import UserId from './userId';
 import ModalWindow from './modalWindow';
+import auth from '../auth';
 
 import { fetchData, setTransactionData, makeTransaction } from '../actions/dashboardActions';
 
@@ -27,11 +28,26 @@ class Dashboard extends React.Component {
         this.props.fetchData();
     }
 
+    logOutHandler = (e) => {
+        e.preventDefault();
+        auth.logout();
+        window.location.reload();
+    };
+
     render () {
         const buttons = [<button className="btn btn-sm btn-info" onClick={this.props.makeTransaction} type="submit"><i className="fa fa-send push-5-r"/> Transfer</button>];
         const transactions = Object.keys(this.props.data).length > 0 ? this.props.data.transactions : [];
         return (
             <main id="main-container" style={{minHeight: '263px'}}>
+                <div className="content-mini content-boxed">
+                    <ul className="nav nav-pills nav-sub-header push-r" style={{float: 'right'}}>
+                        <li onClick={this.logOutHandler}>
+                            <a href="">
+                                <i className="fa fa-sign-out push-5-r"/>Log Out
+                            </a>
+                        </li>
+                    </ul>
+                </div>
                 <div className="content content-boxed">
                     <div className="block">
                         <div className="block-header">
@@ -81,19 +97,6 @@ class Dashboard extends React.Component {
                                             )
                                         })
                                     }
-                                        <tr>
-                                            <td className="text-center text-muted" style={{width: '200px'}}>September 29, 2016</td>
-                                            <td style={{width: '100px'}}>#ID59630</td>
-                                            <td>
-                                                <a className="font-w600" href="javascript:void(0)">Calendious</a>
-                                            </td>
-                                            <td className="text-right">
-                                                <a className="font-w600" href="javascript:void(0)">Ethan Howard</a>
-                                            </td>
-                                            <td className="text-right" style={{width: '80px'}}>
-                                                <span className="font-w600 text-success">+ 44</span>
-                                            </td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>

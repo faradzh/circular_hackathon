@@ -25,7 +25,7 @@ export function makeTransaction() {
         const url = '/profiles/make-transaction/';
         const transactionUniqueId = getState().dashboardReducer.transactionData.transactionUniqueId;
         const transactionAmount = getState().dashboardReducer.transactionData.transactionAmount;
-        const userId = 16;
+        const userId = localStorage.currentUser ? JSON.parse(localStorage.currentUser).id : '';
         const params = {
             user_id: userId,
             transaction_unique_id: transactionUniqueId,
@@ -34,12 +34,13 @@ export function makeTransaction() {
         jQuery.get(url, params, (response) => {
             console.log("Response", response);
             if (response.message === "ok") {
-                dispatch(setData(response.data))
+                window.location.reload();
+                dispatch(setData(response.data));
             }
             else {
                 console.log('Error', response);
             }
-        })
+        });
     };
 }
 
