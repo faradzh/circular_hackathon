@@ -26551,7 +26551,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function fetchData() {
     return function (dispatch, getState) {
         var url = '/profiles/fetch-profile-data/';
-        var userId = 17;
+        var userId = localStorage.currentUser ? JSON.parse(localStorage.currentUser).id : '';
         _jquery2.default.get(url, { user_id: userId }, function (response) {
             console.log("Response", response);
             if (response.message === "ok") {

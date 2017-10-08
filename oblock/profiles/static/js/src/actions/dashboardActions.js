@@ -7,7 +7,7 @@ import { browserHistory } from 'react-router';
 export function fetchData() {
     return (dispatch, getState) => {
         const url = '/profiles/fetch-profile-data/';
-        const userId = 17;
+        const userId = localStorage.currentUser ? JSON.parse(localStorage.currentUser).id : '';
         jQuery.get(url, {user_id: userId}, (response) => {
             console.log("Response", response);
             if (response.message === "ok") {
