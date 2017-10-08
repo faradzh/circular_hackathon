@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block js %}
+    {{ block.super }}
+    <script src="{% static 'js/dist/main.bundle.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="root-container"></div>
+{% endblock %}
