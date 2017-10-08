@@ -10,7 +10,7 @@ def create_user_profile(sender, instance, created, **kwargs):
     if created:
         generated_id = generate_id(1000000, Profile)
         profile = Profile.objects.create(user=instance, unique_id=generated_id)
-        Wallet.objects.create(profile=profile, balance=0.0)
+        Wallet.objects.create(profile=profile, balance=100)
 
 
 @receiver(post_save, sender=User)
