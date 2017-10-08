@@ -4,6 +4,7 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
 import auth from './auth';
+const imageSrc = require('../../images/logo-black-navbar.png');
 
 export default class Login extends React.Component {
     componentDidMount () {
@@ -18,7 +19,7 @@ export default class Login extends React.Component {
         const password = this.refs.password.value;
 
         auth.login(username, password, () => {
-            this.props.router.push('/app/dashboard/timetable');
+            this.props.router.push('/dashboard');
         });
     };
 
@@ -40,11 +41,10 @@ export default class Login extends React.Component {
             <div className="bg-white pulldown">
                 <div className="content content-boxed overflow-hidden">
                     <div className="row">
-                        <div className="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
+                        <div className="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4" style={{margin: '0 auto'}}>
                             <div className="push-30-t push-50 animated fadeIn">
                                 <div className="text-center">
-                                    <i className="fa fa-2x fa-medium text-primary"/>
-                                    <p className="text-muted push-15-t">Ваша личная медицинская карта онлайн</p>
+                                    <img src={imageSrc}/>
                                 </div>
 
                                 <form className="js-validation-login form-horizontal push-30-t" onSubmit={this.handleSubmit}>
@@ -52,7 +52,7 @@ export default class Login extends React.Component {
                                         <div className="col-xs-12">
                                             <div className="form-material form-material-primary floating">
                                                 <input className="form-control" type="text" ref="username" id="login-username" name="login-username"/>
-                                                <label htmlFor="login-username">Имя пользователя</label>
+                                                <label htmlFor="login-username">Username</label>
                                             </div>
                                         </div>
                                     </div>
@@ -61,7 +61,7 @@ export default class Login extends React.Component {
                                             <div className="form-material form-material-primary floating">
                                                 <input className="form-control" type="password" ref="password" id="login-password" name="login-password"/>
                                                 {this.hasErrors() ? <div id="val-username-error" className="help-block animated fadeInDown">Имя пользователя или пароль неверны!</div> : ''}
-                                                <label htmlFor="login-password">Пароль</label>
+                                                <label htmlFor="login-password">Password</label>
                                             </div>
                                         </div>
                                     </div>

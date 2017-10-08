@@ -4,23 +4,43 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 from profiles.models import Profile, Transaction
+from profiles.serializers import UserSerializer
 from rest_framework import viewsets, permissions, response
+from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.response import Response
 
 
 class Index(TemplateView):
     template_name = "index.html"
 
 
-# class UserViewSet(viewsets.ModelViewSet):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
-#     permission_classes = (permissions.IsAuthenticated,)
-#
-#     def retrieve(self, request, pk=None, *args, **kwargs):
-#         if pk == 'i':
-#             serialised_user = UserSerializer(request.user, context={'request': request})
-#             return response.Response(serialised_user.data)
-#         return super(UserViewSet, self).retrieve(request, pk)
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def retrieve(self, request, pk=None, *args, **kwargs):
+        if pk == 'i':
+            serialised_user = UserSerializer(request.user, context={'request': request})
+            return response.Response(serialised_user.data)
+        return super(UserViewSet, self).retrieve(request, pk)
+
+
+class CustomAuthToken(ObtainAuthToken):
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({
+            'id': user.id,
+            'token': token.key
+        })
+
+
+custom_auth_token = CustomAuthToken.as_view()
 
 
 @csrf_exempt

@@ -46,7 +46,7 @@ module.exports = {
     getToken: function (username, password, callback) {
         const form = this.createForm(username, password);
 
-        fetch('/users/custom-auth-token/',
+        fetch('/profiles/custom-auth-token/',
             {
                 method: 'POST',
                 body: form
@@ -63,8 +63,7 @@ module.exports = {
                 callback({
                     authenticated: true,
                     token: response.token,
-                    id: response.id,
-                    userGroup: response.user_group
+                    id: response.id
                 })
             })
     }
