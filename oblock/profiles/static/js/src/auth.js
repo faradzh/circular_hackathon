@@ -8,12 +8,12 @@ const { dispatch } = Store;
 
 module.exports = {
     login: function (username, password, callback) {
-        if (localStorage.token){
-            if (callback){
-                callback(true);
-                return;
-            }
-        }
+        // if (localStorage.token){
+        //     if (callback){
+        //         callback(true);
+        //         return;
+        //     }
+        // }
         this.getToken(username, password, (res) => {
             if (res.authenticated) {
                 localStorage.token = res.token;

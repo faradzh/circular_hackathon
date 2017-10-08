@@ -1,5 +1,5 @@
 import React from 'react';
-require('../../../css/sb-admin-2.css');
+const imageSrc = require('../../../images/logo-black-navbar.png');
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -22,42 +22,68 @@ class SignUp extends React.Component {
 
     render () {
         return (
-            <div className="col-md-12">
-                <div className="container">
+            <div className="bg-white pulldown"  style={{top: '50px !important'}}>
+                <div className="content content-boxed overflow-hidden" style={{padding: '0px 30px 1px'}}>
                     <div className="row">
-                        <div className="col-md-4 col-md-offset-4">
-                            <img src="../../user-platform/pages/img/logo-black-navbar.png" id="registration-logo"/>
-                            <div className="login-panel panel panel-default">
-                                <div className="panel-heading">
-                                    <h3 className="panel-title">Please Register</h3>
+                        <div style={{margin: '0 auto'}} className="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
+                            <div className="push-30-t push-20 animated fadeIn" style={{marginTop: '0px !important'}}>
+                                <div className="text-center">
+                                    <img src={imageSrc} />
+                                    <h1 className="h4 push-10-t">Create Account</h1>
                                 </div>
-                                <div className="panel-body">
-                                    <form onSubmit={this.props.submitData}>
-                                        <fieldset>
-                                            <div className="form-group">
-                                                <input className="form-control" onChange={this.props.setSignUpData} value={this.props.signUpData.username} placeholder="Username" name="username" type="name" autoFocus/>
+
+                                <form onSubmit={this.props.submitData} className="js-validation-register form-horizontal push-50-t push-50 " action="base_pages_register_v2.html" method="post" style={{marginTop: '20px !important', marginBottom: '20px !important'}}>
+                                    <div className="form-group">
+                                        <div className="col-xs-12">
+                                            <div className="form-material form-material-success">
+                                                <input onChange={this.props.setSignUpData} value={this.props.signUpData.username} className="form-control" type="text" id="register-username" name="username" placeholder="Please enter a username"/>
+                                                <label for="register-username">Username</label>
                                             </div>
-                                            <div className="form-group">
-                                                <input className="form-control" onChange={this.props.setSignUpData} value={this.props.signUpData.fullname} placeholder="Full name" name="fullname" type="name"/>
+                                        </div>
+                                    </div>
+                                    <div className="form-group">
+                                        <div className="col-xs-12">
+                                            <div className="form-material form-material-success">
+                                                <input onChange={this.props.setSignUpData} value={this.props.signUpData.fullname} className="form-control" type="text" id="register-email" name="fullname" placeholder="Please provide your fullname"/>
+                                                <label for="register-email">Fullname</label>
                                             </div>
-                                            <div className="form-group">
-                                                <input className="form-control" onChange={this.props.setSignUpData} placeholder="Email" name="email" type="email" value={this.props.signUpData.email}/>
+                                        </div>
+                                    </div>
+                                    <div className="form-group">
+                                        <div className="col-xs-12">
+                                            <div className="form-material form-material-success">
+                                                <input onChange={this.props.setSignUpData} value={this.props.signUpData.email} className="form-control" type="email" id="register-password" name="email" placeholder="Choose an email"/>
+                                                <label for="register-password">Email</label>
                                             </div>
-                                            <div className="form-group">
-                                                <input className="form-control" onChange={this.props.setSignUpData} placeholder="Password" name="password" type="password" value={this.props.signUpData.password}/>
+                                        </div>
+                                    </div>
+                                    <div className="form-group">
+                                        <div className="col-xs-12">
+                                            <div className="form-material form-material-success">
+                                                <input onChange={this.props.setSignUpData} value={this.props.signUpData.password} className="form-control" type="password" id="register-password" name="password" placeholder="Choose a strong password.."/>
+                                                <label for="register-password">Password</label>
                                             </div>
-                                            <div className="form-group">
-                                                <input className="form-control" onChange={this.props.setSignUpData} placeholder="Confirm password" name="passwordConfirm" type="password" value={this.props.signUpData.passwordConfirm}/>
+                                        </div>
+                                    </div>
+                                    <div className="form-group">
+                                        <div className="col-xs-12">
+                                            <div className="form-material form-material-success">
+                                                <input onChange={this.props.setSignUpData} className="form-control" type="password" id="register-password2" name="passwordConfirm" placeholder="..and confirm it"/>
+                                                <label for="register-password2">Confirm Password</label>
                                             </div>
-                                            <button type="submit" className="btn btn-lg btn-success btn-block">Register</button>
-                                        </fieldset>
-                                    </form>
-                                </div>
-                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="form-group">
+                                        <div className="col-xs-12 col-sm-6 col-sm-offset-3">
+                                            <button className="btn btn-sm btn-block btn-success" type="submit">Create Account</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
         )
     }
 }
